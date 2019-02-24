@@ -14,9 +14,16 @@ I create this project by using .Net Core Console Application version 2.1
 If you cannot run this project please right click on the project name and then set the target framework to be .Net Core 2.1
 
 
+
+## Project Structure
+
+There are two sub projects in this solution. One is **FileReader** which is for read and display data from csv files.  The other one is **FileReader.Test** which  is the unit test of the FileReader project.
+
+
+
+
 ## App Settings
 
 | Key              | Usage                      |
 | :--------------- | :------------------------- |
-| ```Path   ``` | The file Path for CSV file |
-
+| ```FolderPath   ``` | The Path for CSV files |
