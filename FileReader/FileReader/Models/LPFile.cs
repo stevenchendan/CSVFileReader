@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FileReader.Models
 {
-    class LPFile : File, IFileOperation
+    class LPFile : CSVFile, IFileOperation
     {
         public List<string> MeterPointCodeList { get; set; }
         public List<string> SerialNumberList { get; set; }
