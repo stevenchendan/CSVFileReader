@@ -13,41 +13,46 @@ namespace FileReader
     {
         static void Main(string[] args)
         {
-            var filePath = ConfigurationManager.AppSettings["Path"];
-            var fileName = Path.GetFileName(filePath);
+            DirectoryInfo di = new DirectoryInfo(ConfigurationManager.AppSettings["FolderPath"]);
+            FileInfo[] files = di.GetFiles("*.csv");
+
             Console.WriteLine("CSV File Reader");
             Console.WriteLine("The value below are either 80% lower than median value or 120% larger than median value.");
             var table = new ConsoleTable("File Name", "Datetime", "Value", "Median Value");
-            if (fileName.ToLower().StartsWith("lp"))
+            for (int i = 0; i < files.Length; i++)
             {
-                var lpFile = new LPFile();
-                lpFile.ReadDataFromCsvFile(filePath);
-                lpFile.DataValueList.RemoveAt(0);
-                lpFile.DateTimeList.RemoveAt(0);
-                List<double> result = lpFile.DataValueList.Select(x => double.Parse(x)).ToList();
-                var median = lpFile.CalculateMedian(result);
-
-                for (int i = 0; i < result.Count(); i++)
+                var fileName = Path.GetFileName(files[i].FullName);
+                if (fileName.ToLower().StartsWith("lp"))
                 {
-                    if (result[i] < median * 0.8 || result[i] > median * 1.2)
+                    var lpFile = new LPFile();
+                    lpFile.ReadDataFromCsvFile(files[i].FullName);
+                    lpFile.DataValueList.RemoveAt(0);
+                    lpFile.DateTimeList.RemoveAt(0);
+                    List<double> result = lpFile.DataValueList.Select(x => double.Parse(x)).ToList();
+                    var median = lpFile.CalculateMedian(result);
+
+                    for (int j = 0; j < result.Count(); j++)
                     {
-                        table.AddRow(fileName, lpFile.DateTimeList[i], result[i], median);
+                        if (result[j] < median * 0.8 || result[j] > median * 1.2)
+                        {
+                            table.AddRow(fileName, lpFile.DateTimeList[j], result[j], median);
+                        }
                     }
                 }
-            }
-            else if (fileName.ToLower().StartsWith("tou"))
-            {
-                var touFile = new TOUFile();
-                touFile.ReadDataFromCsvFile(filePath);
-                touFile.EnergyList.RemoveAt(0);
-                touFile.DateTimeList.RemoveAt(0);
-                List<double> result = touFile.EnergyList.Select(x => double.Parse(x)).ToList();
-                var median = touFile.CalculateMedian(result);
-                for (int i = 0; i < result.Count(); i++)
+                else if (fileName.ToLower().StartsWith("tou"))
                 {
-                    if (result[i] < median * 0.8 || result[i] > median * 1.2)
+                    var touFile = new TOUFile();
+                    touFile.ReadDataFromCsvFile(files[i].FullName);
+                    touFile.EnergyList.RemoveAt(0);
+                    touFile.DateTimeList.RemoveAt(0);
+                    List<double> result = touFile.EnergyList.Select(x => double.Parse(x)).ToList();
+                    var median = touFile.CalculateMedian(result);
+                    for (int j = 0; j < result.Count(); j++)
                     {
-                        table.AddRow(fileName, touFile.DateTimeList[i], result[i], median);
+                        if (result[j] < median * 0.8 || result[j] > median * 1.2)
+                        {
+                            table.AddRow(fileName, touFile.DateTimeList[j], result[j], median);
+                        }
                     }
                 }
             }
