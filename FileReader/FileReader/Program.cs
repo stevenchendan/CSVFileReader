@@ -34,7 +34,7 @@ namespace FileReader
                 //get median value and then print value
             }
 
-            Console.WriteLine("Finish");
+            Console.WriteLine("Finish the program by pressing Enter Key");
             Console.ReadLine();
         }
     }
