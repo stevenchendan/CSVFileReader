@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FileReader.Models
 {
-    class TOUFile : File
+    class TOUFile : CSVFile, IFileOperation
     {
         public List<string> MeterPointCodeList { get; set; }
         public List<string> SerialNumberList { get; set; }

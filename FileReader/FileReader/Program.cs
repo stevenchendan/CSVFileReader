@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Net.Sockets;
 using FileReader.Models;
 
@@ -10,7 +12,6 @@ namespace FileReader
     {
         static void Main(string[] args)
         {
-            //TODO: make read file configurable
             var filePath = ConfigurationManager.AppSettings["Path"];
             var fileName = Path.GetFileName(filePath);
             Console.WriteLine("CSV File Reader");
@@ -18,16 +19,19 @@ namespace FileReader
             {
                 var lpFile = new LPFile();
                 lpFile.ReadDataFromCsvFile(filePath);
+                lpFile.DataValueList.RemoveAt(0);
+                List<double> result = lpFile.DataValueList.Select(x => double.Parse(x)).ToList();
+                var median = lpFile.CalculateMedian(result);
             }
             else if (fileName.ToLower().StartsWith("tou"))
             {
                 var touFile = new TOUFile();
                 touFile.ReadDataFromCsvFile(filePath);
+                List<double> result = touFile.EnergyList.Select(x => double.Parse(x)).ToList();
+                var median = touFile.CalculateMedian(result);
             }
 
-            //TODO: Get Data from CSV File
-
-            Console.WriteLine("Finish");
+            Console.WriteLine("Finish the program by pressing Enter Key");
             Console.ReadLine();
         }
     }
