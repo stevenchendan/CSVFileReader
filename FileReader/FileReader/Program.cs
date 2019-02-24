@@ -19,9 +19,7 @@ namespace FileReader
             {
                 var lpFile = new LPFile();
                 lpFile.ReadDataFromCsvFile(filePath);
-                //get median value and then print value
                 lpFile.DataValueList.RemoveAt(0);
-                //convert string to double
                 List<double> result = lpFile.DataValueList.Select(x => double.Parse(x)).ToList();
                 var median = lpFile.CalculateMedian(result);
             }
@@ -31,7 +29,6 @@ namespace FileReader
                 touFile.ReadDataFromCsvFile(filePath);
                 List<double> result = touFile.EnergyList.Select(x => double.Parse(x)).ToList();
                 var median = touFile.CalculateMedian(result);
-                //get median value and then print value
             }
 
             Console.WriteLine("Finish the program by pressing Enter Key");
